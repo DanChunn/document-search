@@ -82,17 +82,17 @@ def read_data(path=data_folder):
 				raw_title = name
 
 				with open(path+name, 'r') as file:
-					raw_text = file.read().replace('\n', '').lower()
+					raw_text = file.read().replace('\n', '')
 					data_set.append(tuple([raw_title, raw_text]))
 
 	end_time = datetime.now()
 	duration = end_time - start_time
-	print('Preprocessing finished in {}'.format(str(duration.total_seconds()*1000) + ' ms'))
+	print('Reading data finished in {}'.format(str(duration.total_seconds()*1000) + ' ms'))
 
 
 #processes entire dataset, counts number of terms found within each document
 def process_corpus(data=data_set):
-	print('Preprocessing Data...')
+	print('Preprocessing data...')
 	start_time = datetime.now()
 
 	for data in data_set:
@@ -100,7 +100,7 @@ def process_corpus(data=data_set):
 		title = get_title(data)
 
 		processed_text = preprocess(text, title).split(' ')
-		total_word_count = len(processed_text)
+		#total_word_count = len(processed_text)
 		max_term_count = 0
 		processed_text_dict = {}
 		
@@ -130,7 +130,7 @@ def process_corpus(data=data_set):
 #search by regex on raw unedited text
 def search_regex(regex):
 	logging.info(' --- regex ---')
-	print(' regex search - {}'.format(regex))
+	print('\nregex search query - {}'.format(regex))
 
 	res = {}
 	for data in data_set:
@@ -146,19 +146,18 @@ def search_regex(regex):
 
 #search by exact string match on raw unedited text, case sensitive
 def search_simple(query):
-	query = query.lower()
-
 	logging.info(' --- match ---')
-	print(' simple search - {}'.format(query))
+	query = query
+	print('\nsimple search query - {}'.format(query))
 
 	res = {}
 	for data in data_set:
 		text = get_data(data)
 		title = get_title(data)
 
-		found = re.findall(query, text)
+		found = re.findall(query, text, flags=re.IGNORECASE)
 		res[title] = len(found)
-		logging.info('RESULTS FROM {} --- {}'.format(title, found, query))
+		logging.info('RESULTS FROM {} --- {}'.format(title, found))
 
 	logging.info(' ------------\n')
 	return sorted(res.items(), key=lambda x:x[1], reverse=True)
@@ -168,12 +167,13 @@ def search_simple(query):
 #search using by term frequency score
 def search_index(query):
 	logging.info(' --- index ---')
+	print('\nindex search query - {}'.format(query))
 	res = {}
 	query = preprocess_query(query, 'query')
 	query = set(query.split(' '))
 	if '' in query:
 		query.remove('')
-	print(' index search - {}'.format(query))
+	print('index search processed query - {}'.format(query))
 	# print(processed_data_set)
 
 	for query_term in query:
@@ -255,12 +255,12 @@ with CodeTimer('regex loop'):
 	count = 0
 	for i in range(0,1):
 		print('...')
-		print(search_regex(r'\bwarp\b'))
-		print(search_regex(r'\bhitchhiker\b'))
-		print(search_regex(r'\bfrench war\b'))
-		print(search_regex(r'\bthe\b'))
-		print(search_regex(r'\btravel\b'))
-		print(search_regex(r'\bFollowing defeat in the Franco-Prussian War\b'))
+		print(search_regex(r'warp'))
+		print(search_regex(r'hitchhiker'))
+		print(search_regex(r'french war'))
+		print(search_regex(r'the'))
+		print(search_regex(r'travel'))
+		print(search_regex(r'Following defeat in the Franco-Prussian War'))
 
 		#print(search_regex('([A-Z][a-z]+)') )
 		#print(search_regex('([A-Z]+rench)'))

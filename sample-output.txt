@@ -1,52 +1,76 @@
 Reading data...
-Preprocessing finished in 3.003 ms
-Preprocessing Data...
-Preprocessing finished in 44.039 ms
+Reading data finished in 1.001 ms
+Preprocessing data...
+Preprocessing finished in 29.029 ms
 
 
 ...
- simple search - warp
-[('warp_drive.txt', 6), ('french_armed_forces.txt', 0), ('french_armed_forces_2.txt', 0), ('hitchhikers.txt', 0)]
- simple search - hitchhiker
-[('hitchhikers.txt', 6), ('french_armed_forces.txt', 0), ('french_armed_forces_2.txt', 0), ('warp_drive.txt', 0)]
- simple search - french war
-[('french_armed_forces.txt', 0), ('french_armed_forces_2.txt', 0), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
- simple search - the
-[('french_armed_forces.txt', 66), ('french_armed_forces_2.txt', 66), ('hitchhikers.txt', 33), ('warp_drive.txt', 9)]
- simple search - travel
-[('warp_drive.txt', 2), ('hitchhikers.txt', 1), ('french_armed_forces.txt', 0), ('french_armed_forces_2.txt', 0)]
- simple search - following defeat in the franco-prussian war
-[('french_armed_forces.txt', 1), ('french_armed_forces_2.txt', 1), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
-Code block 'match loop' took: 1.7183999999998978 ms
+
+simple search query - warp
+[('warp_drive.txt', 6), ('french_armed_forces.txt', 0), ('hitchhikers.txt', 0)]
+
+simple search query - hitchhiker
+[('hitchhikers.txt', 6), ('french_armed_forces.txt', 0), ('warp_drive.txt', 0)]
+
+simple search query - french war
+[('french_armed_forces.txt', 0), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
+
+simple search query - the
+[('french_armed_forces.txt', 66), ('hitchhikers.txt', 33), ('warp_drive.txt', 9)]
+
+simple search query - travel
+[('warp_drive.txt', 2), ('hitchhikers.txt', 1), ('french_armed_forces.txt', 0)]
+
+simple search query - Following defeat in the Franco-Prussian War
+[('french_armed_forces.txt', 1), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
+Code block 'match loop' took: 2.635500000000013 ms
 
 
 ...
- regex search - \bwarp\b
-[('warp_drive.txt', 6), ('french_armed_forces.txt', 0), ('french_armed_forces_2.txt', 0), ('hitchhikers.txt', 0)]
- regex search - \bhitchhiker\b
-[('hitchhikers.txt', 6), ('french_armed_forces.txt', 0), ('french_armed_forces_2.txt', 0), ('warp_drive.txt', 0)]
- regex search - \bfrench war\b
-[('french_armed_forces.txt', 0), ('french_armed_forces_2.txt', 0), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
- regex search - \bthe\b
-[('french_armed_forces.txt', 64), ('french_armed_forces_2.txt', 64), ('hitchhikers.txt', 29), ('warp_drive.txt', 6)]
- regex search - \btravel\b
-[('warp_drive.txt', 2), ('hitchhikers.txt', 1), ('french_armed_forces.txt', 0), ('french_armed_forces_2.txt', 0)]
- regex search - \bFollowing defeat in the Franco-Prussian War\b
-[('french_armed_forces.txt', 0), ('french_armed_forces_2.txt', 0), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
-Code block 'regex loop' took: 3.8393999999999373 ms
+
+regex search query - warp
+[('warp_drive.txt', 5), ('french_armed_forces.txt', 0), ('hitchhikers.txt', 0)]
+
+regex search query - hitchhiker
+[('french_armed_forces.txt', 0), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
+
+regex search query - french war
+[('french_armed_forces.txt', 0), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
+
+regex search query - the
+[('french_armed_forces.txt', 59), ('hitchhikers.txt', 24), ('warp_drive.txt', 9)]
+
+regex search query - travel
+[('warp_drive.txt', 2), ('hitchhikers.txt', 1), ('french_armed_forces.txt', 0)]
+
+regex search query - Following defeat in the Franco-Prussian War
+[('french_armed_forces.txt', 1), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
+Code block 'regex loop' took: 3.8133000000000195 ms
 
 
 ...
- index search - {'warp'}
+
+index search query - warp
+index search processed query - {'warp'}
 [('warp_drive.txt', 0.8571)]
- index search - {'hitchhik'}
+
+index search query - hitchhiker
+index search processed query - {'hitchhik'}
 [('hitchhikers.txt', 0.75)]
- index search - {'french', 'war'}
-[('french_armed_forces.txt', 1.3889), ('french_armed_forces_2.txt', 1.3889), ('warp_drive.txt', 0.1429)]
- index search - {'the'}
+
+index search query - french war
+index search processed query - {'french', 'war'}
+[('french_armed_forces.txt', 1.3889), ('warp_drive.txt', 0.1429)]
+
+index search query - the
+index search processed query - {'the'}
 []
- index search - {'travel'}
+
+index search query - travel
+index search processed query - {'travel'}
 [('warp_drive.txt', 0.2857), ('hitchhikers.txt', 0.125)]
- index search - {'in', 'prussian', 'follow', 'defeat', 'war', 'franco', 'the'}
-[('french_armed_forces.txt', 1.3334), ('french_armed_forces_2.txt', 1.3334), ('warp_drive.txt', 0.1429)]
-Code block 'index loop' took: 2.268300000000001 ms
+
+index search query - Following defeat in the Franco-Prussian War
+index search processed query - {'the', 'defeat', 'franco', 'in', 'prussian', 'war', 'follow'}
+[('french_armed_forces.txt', 1.3334), ('warp_drive.txt', 0.1429)]
+Code block 'index loop' took: 4.866099999999984 ms
