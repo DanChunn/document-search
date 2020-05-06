@@ -115,7 +115,7 @@ def process_corpus(data=data_set):
 
 		#convert tf into scores based on tf / count of most popular word
 		for word, tf in processed_text_dict.items():
-			processed_text_dict[word] = tf / max_term_count 
+			processed_text_dict[word] = tf / max_term_count  #dampening
 		
 		processed_text_dict.pop('', None)
 		processed_data_set.append([title, processed_text_dict])
@@ -165,7 +165,7 @@ def search_simple(query):
 
 
 
-#search using by term frequency?
+#search using by term frequency score
 def search_index(query):
 	logging.info(' --- index ---')
 	res = {}
