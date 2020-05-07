@@ -16,9 +16,14 @@ nltk.download('punkt')
 
 debug = False
 data_folder = os.getcwd() + "/document-search/data/"
-data_set = [] #array of tuples (title, raw_document_text)
-processed_data_set = [] #array of tuples (title, {word_key:count})
 
+#could have structured this better
+data_set = [] #array of tuples (title, raw_document_text)
+processed_data_set = {} #dataset of titles and their word tdidfs  {title : {word : tf_score, word : tf_score}, title: {word : tf_score, word : tf_score}}
+unique_word_count_in_corpus = {} #words found atleast once in documents across corpus {word:count}
+
+
+#instead of having this method, could have had a dictionary/hashmap
 def get_title(tuple_item):
 	return tuple_item[0]
 
@@ -112,13 +117,28 @@ def process_corpus(data=data_set):
 					max_term_count = processed_text_dict[w]
 			else: 
 				processed_text_dict[w] = 1
+				if w in unique_word_count_in_corpus:
+					unique_word_count_in_corpus[w] += 1
+				else:
+					unique_word_count_in_corpus[w] = 1
 
 		#convert tf into scores based on tf / count of most popular word
 		for word, tf in processed_text_dict.items():
 			processed_text_dict[word] = tf / max_term_count  #dampening
 		
 		processed_text_dict.pop('', None)
-		processed_data_set.append([title, processed_text_dict])
+		processed_data_set[title] = processed_text_dict
+
+	#get idf and tfidf for each word
+	for word in unique_word_count_in_corpus:
+		idf = len(data_set) / unique_word_count_in_corpus[w]
+		#{title : {word : tf_score, word : tf_score}, title: {word : tf_score, word : tf_score}}
+		for title in processed_data_set:
+			data = processed_data_set[title] 
+			if word in data:
+				tf = data[word]
+				data[word] = tuple([tf, idf, tf*idf])
+	print(processed_data_set)
 
 	end_time = datetime.now()
 	duration = end_time - start_time
@@ -177,16 +197,15 @@ def search_index(query):
 	# print(processed_data_set)
 
 	for query_term in query:
-		for data in processed_data_set:
-			data_dict = get_data(data)
-			title = get_title(data)
+		for title in processed_data_set:
+			text_data = processed_data_set[title]
 
-			if query_term in data_dict:
-				tf_score = data_dict[query_term]
+			if query_term in text_data:
+				tfidf_score = text_data[query_term][2] #tfidf
 				if title in res:
-					res[title] = round(tf_score + res[title], 4)
+					res[title] += tfidf_score
 				else:
-					res[title] = round(tf_score, 4)
+					res[title] = tfidf_score
 
 	logging.info(' ------------\n')
 	return sorted(res.items(), key=lambda x:x[1], reverse=True)
