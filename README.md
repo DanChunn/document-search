@@ -1,6 +1,6 @@
 ## document-search
 
-#### 3 search functions:
+### 3 search functions:
 
 Match: Searches by string match, while ignoring case
 
