@@ -17,18 +17,8 @@ nltk.download('punkt')
 debug = False
 data_folder = os.getcwd() + "/document-search/data/"
 
-#could have structured this better
-data_set = [] #array of tuples (title, raw_document_text)
-processed_data_set = {} #dataset of titles and their word tdidfs  {title : {word : tf_score, word : tf_score}, title: {word : tf_score, word : tf_score}}
-unique_word_count_in_corpus = {} #words found atleast once in documents across corpus {word:count}
-
-
-#instead of having this method, could have had a dictionary/hashmap
-def get_title(tuple_item):
-	return tuple_item[0]
-
-def get_data(tuple_item):
-	return tuple_item[1]
+data_set = {} #{title:text}
+processed_data_set = {} #dataset of titles and their word tdidfs  {title : {word : {tf, idf, tfidf}}
 
 def to_lower_case(text):
 	return text.lower()
@@ -88,7 +78,7 @@ def read_data(path=data_folder):
 
 				with open(path+name, 'r') as file:
 					raw_text = file.read().replace('\n', '')
-					data_set.append(tuple([raw_title, raw_text]))
+					data_set[raw_title] = raw_text
 
 	end_time = datetime.now()
 	duration = end_time - start_time
@@ -99,10 +89,10 @@ def read_data(path=data_folder):
 def process_corpus(data=data_set):
 	print('Preprocessing data...')
 	start_time = datetime.now()
+	unique_word_count_in_corpus = {} #words found atleast once in documents across corpus {word:count}
 
-	for data in data_set:
-		text = get_data(data)
-		title = get_title(data)
+	for title in data_set:
+		text = data_set[title]
 
 		processed_text = preprocess(text, title).split(' ')
 		#total_word_count = len(processed_text)
@@ -132,14 +122,18 @@ def process_corpus(data=data_set):
 	#get idf and tfidf for each word
 	for word in unique_word_count_in_corpus:
 		idf = len(data_set) / unique_word_count_in_corpus[w]
-		#{title : {word : tf_score, word : tf_score}, title: {word : tf_score, word : tf_score}}
+		#processed_data_set: {title : {word : tf_score, word : tf_score}}
 		for title in processed_data_set:
 			data = processed_data_set[title] 
 			if word in data:
 				tf = data[word]
-				data[word] = tuple([tf, idf, tf*idf])
-	print(processed_data_set)
+				tfidf_data = {}
+				tfidf_data['tf'] = round(tf,6)
+				tfidf_data['idf'] = round(idf,6)
+				tfidf_data['tfidf'] = round(tf*idf,5)
+				data[word] = tfidf_data
 
+	#print(processed_data_set)
 	end_time = datetime.now()
 	duration = end_time - start_time
 	print('Preprocessing finished in {}'.format(str(duration.total_seconds()*1000) + ' ms'))
@@ -153,9 +147,8 @@ def search_regex(regex):
 	print('\nregex search query - {}'.format(regex))
 
 	res = {}
-	for data in data_set:
-		text = get_data(data)
-		title = get_title(data)
+	for title in data_set:
+		text = data_set[title]
 
 		found = re.findall(regex, text)
 		res[title] = len(found)
@@ -171,9 +164,8 @@ def search_simple(query):
 	print('\nsimple search query - {}'.format(query))
 
 	res = {}
-	for data in data_set:
-		text = get_data(data)
-		title = get_title(data)
+	for title in data_set:
+		text = data_set[title]
 
 		found = re.findall(query, text, flags=re.IGNORECASE)
 		res[title] = len(found)
@@ -201,7 +193,7 @@ def search_index(query):
 			text_data = processed_data_set[title]
 
 			if query_term in text_data:
-				tfidf_score = text_data[query_term][2] #tfidf
+				tfidf_score = text_data[query_term]['tfidf']
 				if title in res:
 					res[title] += tfidf_score
 				else:
@@ -234,7 +226,7 @@ process_corpus()
 print('\n')
 
 # SET TO TRUE IF YOU WISH TO RUN BY COMMAND LINE
-running = False
+running = True
 while(running):
 	query = input("\nEnter your search query:\n") 
 	search_type = input("\nEnter search type: (match / regex / index)\n").lower()
@@ -267,6 +259,7 @@ with CodeTimer('match loop'):
 		print(search_simple('the'))
 		print(search_simple('travel'))
 		print(search_simple('Following defeat in the Franco-Prussian War'))
+		print(search_simple('follower'))
 
 print('\n')
 
@@ -280,6 +273,8 @@ with CodeTimer('regex loop'):
 		print(search_regex(r'the'))
 		print(search_regex(r'travel'))
 		print(search_regex(r'Following defeat in the Franco-Prussian War'))
+		print(search_regex(r'follower'))
+
 
 		#print(search_regex('([A-Z][a-z]+)') )
 		#print(search_regex('([A-Z]+rench)'))
@@ -296,5 +291,6 @@ with CodeTimer('index loop'):
 		print(search_index('the'))
 		print(search_index('travel'))
 		print(search_index('Following defeat in the Franco-Prussian War'))
+		print(search_index('follower'))
 
 #print(processed_data_set)

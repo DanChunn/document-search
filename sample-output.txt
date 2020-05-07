@@ -1,7 +1,7 @@
 Reading data...
-Reading data finished in 1.001 ms
+Reading data finished in 1.9989999999999999 ms
 Preprocessing data...
-Preprocessing finished in 29.029 ms
+Preprocessing finished in 43.143 ms
 
 
 ...
@@ -23,7 +23,10 @@ simple search query - travel
 
 simple search query - Following defeat in the Franco-Prussian War
 [('french_armed_forces.txt', 1), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
-Code block 'match loop' took: 2.635500000000013 ms
+
+simple search query - follower
+[('french_armed_forces.txt', 0), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
+Code block 'match loop' took: 4.703299999999966 ms
 
 
 ...
@@ -45,22 +48,25 @@ regex search query - travel
 
 regex search query - Following defeat in the Franco-Prussian War
 [('french_armed_forces.txt', 1), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
-Code block 'regex loop' took: 3.8133000000000195 ms
+
+regex search query - follower
+[('french_armed_forces.txt', 0), ('hitchhikers.txt', 0), ('warp_drive.txt', 0)]
+Code block 'regex loop' took: 4.488499999999895 ms
 
 
 ...
 
 index search query - warp
 index search processed query - {'warp'}
-[('warp_drive.txt', 0.8571)]
+[('warp_drive.txt', 2.57143)]
 
 index search query - hitchhiker
 index search processed query - {'hitchhik'}
-[('hitchhikers.txt', 0.75)]
+[('hitchhikers.txt', 2.25)]
 
 index search query - french war
 index search processed query - {'french', 'war'}
-[('french_armed_forces.txt', 1.3889), ('warp_drive.txt', 0.1429)]
+[('french_armed_forces.txt', 4.16666), ('warp_drive.txt', 0.42857)]
 
 index search query - the
 index search processed query - {'the'}
@@ -68,9 +74,13 @@ index search processed query - {'the'}
 
 index search query - travel
 index search processed query - {'travel'}
-[('warp_drive.txt', 0.2857), ('hitchhikers.txt', 0.125)]
+[('warp_drive.txt', 0.85714), ('hitchhikers.txt', 0.375)]
 
 index search query - Following defeat in the Franco-Prussian War
-index search processed query - {'the', 'defeat', 'franco', 'in', 'prussian', 'war', 'follow'}
-[('french_armed_forces.txt', 1.3334), ('warp_drive.txt', 0.1429)]
-Code block 'index loop' took: 4.866099999999984 ms
+index search processed query - {'follow', 'the', 'defeat', 'franco', 'war', 'in', 'prussian'}
+[('french_armed_forces.txt', 4.0), ('warp_drive.txt', 0.42857)]
+
+index search query - follower
+index search processed query - {'follow'}
+[('french_armed_forces.txt', 0.33333)]
+Code block 'index loop' took: 5.2539000000000335 ms
