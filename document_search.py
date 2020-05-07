@@ -10,13 +10,14 @@ import numpy as np
 from datetime import datetime
 import locale
 import timeit
-
 nltk.download('stopwords')
 nltk.download('punkt')
 
-debug = False
-data_folder = os.getcwd() + "/document-search/data/"
 
+debug = False
+running = False # SET TO TRUE IF YOU WISH TO RUN BY COMMAND LINE
+
+data_folder = os.getcwd() + "/document-search/data/"
 data_set = {} #{title:text}
 processed_data_set = {} #dataset of titles and their word tdidfs  {title : {word : {tf, idf, tfidf}}
 
@@ -216,7 +217,6 @@ class CodeTimer:
 
 
 
-debug = False
 if(debug):
 	logging.getLogger().setLevel(logging.INFO)
 
@@ -225,8 +225,6 @@ read_data()
 process_corpus()
 print('\n')
 
-# SET TO TRUE IF YOU WISH TO RUN BY COMMAND LINE
-running = True
 while(running):
 	query = input("\nEnter your search query:\n") 
 	search_type = input("\nEnter search type: (match / regex / index)\n").lower()
