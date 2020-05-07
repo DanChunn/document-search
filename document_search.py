@@ -17,7 +17,7 @@ nltk.download('punkt')
 debug = False
 running = False # SET TO TRUE IF YOU WISH TO RUN BY COMMAND LINE
 
-data_folder = os.getcwd() + "/document-search/data/"
+data_folder = os.getcwd() + "/data/"
 data_set = {} #{title:text}
 processed_data_set = {} #dataset of titles and their word tdidfs  {title : {word : {tf, idf, tfidf}}
 
